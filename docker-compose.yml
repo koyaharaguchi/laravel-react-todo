@@ -66,6 +66,21 @@ services:
       - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-secret}
 
+  front:
+    build:
+      context: .
+      dockerfile: ./infra/docker/node/Dockerfile
+    ports:
+      - target: 5173
+        published: ${FRONT_PUBLISHED_PORT:-5173}
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: bind
+        source: ./front
+        target: /app
+    tty: true
+
   mailhog:
     image: mailhog/mailhog
     ports:
